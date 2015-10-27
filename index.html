@@ -1,0 +1,74 @@
+<html>
+
+<head>
+	<script src="bower_components/jquery/dist/jquery.min.js"></script>
+	<script src="bower_components/angular/angular.min.js"></script>
+	<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+
+	<script src="app/app.js"></script>
+	<script src="app/controllers/shell.js"></script>
+	<script src="app/services/typeTimer.js"></script>
+	<script src="app/services/levenshtein.js"></script>
+	<script src="app/services/results.js"></script>
+	<script src="app/services/prompt.js"></script>
+	<script src="app/services/focus.js"></script>
+
+	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+</head>
+
+<body ng-app="typer">
+	<div class="container">
+		<div ng-controller="shell as vm">
+			<div ng-show="vm.showTyper">
+				<div class="row">
+					<div class="col-md-2" >
+						<div class="panel panel-danger" ng-show="vm.cheat">
+							<div class="panel-heading">
+								<h1 class="panel-title">Cheat!</h2>
+							</div>
+							<div class="panel-body">
+								<img class="img-responsive center-block" src="images/disappointed.jpg">
+							</div>
+						</div>
+					</div>
+					<div class="jumbotron col-md-offset-2 col-md-4">
+						<h1 class="text-center">{{vm.nextChar}}</h1>
+					</div>
+					<div class="panel panel-primary col-md-offset-2 col-md-2">
+						<div class="panel-body">
+							<strong>Timer: </strong> {{vm.timer | number:2}} <br />
+						</div>
+					</div>
+				</div>
+				<div class="input-group input-group-lg col-md-12">
+					<input type="text" class="form-control" ng-model="vm.prompt" readonly>
+				</div>
+				<div class="input-group input-group-lg col-md-12">
+					<input id="typed" type="text" class="form-control" ng-model="vm.typed" ng-trim="false" ng-keydown="vm.keyDown($event)" focus-me="vm.showTyper">
+				</div>
+				<ul class="list-unstyled">
+					<li ng-repeat="item in vm.completed">
+						{{item.typed}} <br>
+						<span class="text-muted">{{item.prompt}}</span> <br>
+						<strong>Time: </strong> {{item.timer | number:2}} <strong>Accuracy: </strong> {{item.accuracy | number:0}}% <strong>WPM: </strong> {{item.wpm | number:0}}
+					</li>
+				</ul>
+			</div>
+			<div ng-hide="vm.showTyper" class="jumbotron">
+				<h1>Turtle's Touch Typing Challenge!</h1>
+				<h2>Here's the rules:</h2>
+				<ul>
+					<li>No backspace! It's cheating</li>
+					<li>Timer will start when you start typing</li>
+					<li>Finish the puzzle by hitting the enter key</li>
+					<li>Timer will stop when you finish the puzzle</li>
+					<li>Hit the GO! button to begin the challenge.</li>
+				</ul>
+				<a class="btn btn-primary btn-lg" ng-click="vm.start()">GO!</a>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
